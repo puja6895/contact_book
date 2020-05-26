@@ -201,7 +201,7 @@ $total = $roww['count(*)'];
                 <a href="# "
                     class="list-group-item list-group-item-action text-body sidebar_items active sidebarcontact">
                     <span class="material-icons text-primary">perm_identity </span>
-                    <span class="pl-2">Contacts<span class="badge"
+                    <span class="pl-2 text-primary">Contacts<span class="badge"
                             style="margin-left:50px;"><?php echo $total?></span></span>
                 </a>
 
@@ -344,6 +344,7 @@ $total = $roww['count(*)'];
                 <form action="add.php" method="post" enctype="multipart/form-data">
                     <input type="file" class="image-rounded mt-2" id="image" placeholder="upload image" name="image">
                     <input type="text" class="form-control mt-2" id="name" placeholder="Name" name="name">
+                    <input type="text" class="form-control mt-2" id="email" placeholder="Email" name="email">
                     <input type="number" class="form-control mt-2" id="contact" placeholder="Number" name="contact">
 
                     <!-- Modal footer -->

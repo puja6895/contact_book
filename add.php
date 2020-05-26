@@ -26,13 +26,14 @@
             // echo $_FILES['image'];
             // $image   = $_FILES['image']; 
             $name    = $_POST['name'];
+            $email   = $_POST['email'];
             $contact = $_POST['contact'];
             $id      = $_SESSION['id'];
             // echo $name;
             // echo $contact;
              if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            $query = "INSERT INTO contacts(user_id,name,number,image)
-                      VALUES('$id' , '$name', '$contact','$fileName')";
+            $query = "INSERT INTO contacts(user_id,name,email,number,image)
+                      VALUES('$id' , '$name','$email', '$contact','$fileName')";
 
            
     $results = mysqli_query($conn,$query);
