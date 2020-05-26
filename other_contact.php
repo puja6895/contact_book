@@ -1,21 +1,16 @@
-<?php session_start(); 
+<?php 
+
 include "connect.php";
 
-if (!isset($_SESSION['username'])) {
-    $_SESSION['msg'] = "You must log in first";
-    header('location: login.php');
-}
-
-$query ="select count(*) from contacts";
-
+$query = 'select * from contacts where number = "" or email = "" ';
 $result = mysqli_query($conn,$query);
 
-$roww = mysqli_fetch_array($result);
-$total = $roww['count(*)'];
-//echo $total ; die();
+
+
 
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -162,6 +157,13 @@ $total = $roww['count(*)'];
             border-top-width: 0 !important;
 
         }
+
+        .siderbarother_contact {
+            border-top-right-radius: 30px !important;
+            border-bottom-right-radius: 30px !important;
+            background-color: #4886c738 !important;
+            border-top-width: 0 !important;
+        }
     </style>
 
     <script>
@@ -198,18 +200,19 @@ $total = $roww['count(*)'];
                     <span class="pl-2">Create contacts</span>
                 </a>
 
-                <a href="# "
-                    class="list-group-item list-group-item-action text-body sidebar_items active sidebarcontact">
-                    <span class="material-icons text-primary">perm_identity </span>
-                    <span class="pl-2 text-primary">Contacts<span class="badge"
-                            style="margin-left:50px;"><?php echo $total?></span></span>
+                <a href="index.php " class="list-group-item list-group-item-action text-body sidebar_items ">
+                    <span class="material-icons text-secondary">perm_identity </span>
+                    <span class="pl-2 ">Contacts<span class="badge"
+                            style="margin-left:50px;"><?php //echo $total?></span></span>
                 </a>
 
-                <a href="other_contact.php" class="list-group-item list-group-item-action text-body sidebar_items  ">
-                    <span class="material-icons text-secondary">
+                <a href="# "
+                    class="list-group-item list-group-item-action text-body sidebar_items active siderbarother_contact">
+                    <span class="material-icons text-primary">
                         move_to_inbox
                     </span>
-                    <span class="pl-2">Other contacts<span class="badge" style="margin-left:50px;"></span></span>
+                    <span class="pl-2 text-primary">Other contacts<span class="badge"
+                            style="margin-left:50px;"></span></span>
                 </a>
 
             </div>
@@ -249,7 +252,7 @@ $total = $roww['count(*)'];
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto mt-2 mt-lg-0 ">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <!-- <li class="nav-item">
         <a class="nav-link" href="#">Link</a>
@@ -288,22 +291,15 @@ $total = $roww['count(*)'];
                     </div>
                 </div><br>
                 <div>
-                    <p class="text-secondary mb-3">Contacts (<?php echo $total ?>)</p>
+                    <p class="text-secondary mb-3">Other Contacts <?php //echo $total ?></p>
                 </div>
-                <?php $results = mysqli_query($conn,"select * from contacts where number !=''");  ?>
+                <?php $results = mysqli_query($conn,'select * from contacts where number = "" ');  ?>
                 <?php while ($row = mysqli_fetch_array($results)) { ?>
                 <div class="row pt-2 row_hover mb-3">
                     <div class="col-4 " style="display: flex; ">
                         <div class="circle ">
-                        <?php  //$check = getimagesize($_FILES["image"]["tmp_name"]); ?>
-                        <?php //if($check !== false) { ?>
                             <img class="img" src="./image/<?php echo $row['image'] ?>" alt="image">
                         </div>
-                        <?php //} else {?> 
-                            <!-- <div class="circle ">
-                            <img class="img" src="./image/" alt="image">
-                            </div> -->
-                        <?php //} ?>    
                         <div class="contact_name mt-2">
                             <span><?php echo $row['name'];?></span>
                         </div>
@@ -331,53 +327,3 @@ $total = $roww['count(*)'];
         <!-- /#page-content-wrapper -->
 
     </div>
-    <!-- /#wrapper -->
-    <div class="container">
-
-    </div>
-
-    <!-- The Modal -->
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h5 class="modal-title">Create new contact</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <form action="add.php" method="post" enctype="multipart/form-data">
-                    <input type="file" class="image-rounded mt-2" id="image" placeholder="upload image" name="image">
-                    <input type="text" class="form-control mt-2" id="name" placeholder="Name" name="name">
-                    <input type="text" class="form-control mt-2" id="email" placeholder="Email" name="email">
-                    <input type="number" class="form-control mt-2" id="contact" placeholder="Number" name="contact">
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer form-signin">
-                        <input type="submit" class="btn btn-success" value="Create" name="submit">
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Menu Toggle Script -->
-    <script>
-        $("#menu-toggle").click(function (e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-    </script>
-    <!-- Bootstrap tooltip -->
-    <script>
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
-</body>
-
-</html>
