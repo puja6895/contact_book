@@ -1,12 +1,18 @@
-<?php 
+<?php session_start(); 
 include "connect.php";
+
+if (!isset($_SESSION['username'])) {
+    $_SESSION['msg'] = "You must log in first";
+    header('location: login.php');
+}
 if(isset($_POST['search'])) {
     // echo "<script>alert('working')</script>";
 
-
+        $userId = $_SESSION['id'];
         $search = $_POST['search'];
 
-        $query = "SELECT * FROM contacts WHERE MATCH(name,number) AGAINST('$search')";
+        // $query = "SELECT * FROM contacts WHERE MATCH(name,number) AGAINST('$search')";
+        $query = "SELECT * FROM contacts WHERE user_id = $userId and (name like '$search%' or number like '$search%' or email like '$search%') ";
         
         
         $results = mysqli_query($conn,$query) or die( mysqli_error($conn));
@@ -190,13 +196,20 @@ if(isset($_POST['search'])) {
             <div class="list-group list-group-flush">
                 <a href="add.php" class="list-group-item list-group-item-action text-body sidebar_items"
                     data-toggle="modal" data-target="#myModal">
-                    <span class="icon material-icons">library_add</span>
+                    <span class="icon material-icons text-secondary">library_add</span>
                     <span class="pl-2">Create contacts</span>
                 </a>
 
                 <a href="#" class="list-group-item list-group-item-action text-body sidebar_items">
-                    <span class="material-icons">perm_identity </span>
+                    <span class="material-icons text-secondary">perm_identity </span>
                     <span class="pl-2">Contacts</span>
+                </a>
+
+                <a href="other_contact.php" class="list-group-item list-group-item-action text-body sidebar_items  ">
+                    <span class="material-icons text-secondary">
+                        move_to_inbox
+                    </span>
+                    <span class="pl-2">Other contacts<span class="badge" style="margin-left:50px;"></span></span>
                 </a>
 
             </div>
@@ -232,7 +245,7 @@ aria-label="Search">
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                        <li class="nav-item active">
+                        <li class="nav-item ">
                             <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <!-- <li class="nav-item">
@@ -247,7 +260,7 @@ aria-label="Search">
                                 <!-- <a class="dropdown-item" href="#">Action</a>
 <a class="dropdown-item" href="#">Another action</a> -->
                                 <!-- <div class="dropdown-divider"></div> -->
-                                <a class="dropdown-item" href="#">Logout</a>
+                                <a class="dropdown-item" href="logout.php">Logout</a>
                                 <!-- </div> -->
                         </li>
                     </ul>
@@ -282,8 +295,8 @@ aria-label="Search">
                             <span><?php echo $row['name'];?></span>
                         </div>
                     </div>
-                    <div class="col-3">
-                        <p></p>
+                    <div class="col-3 mt-2">
+                        <span><?php echo $row['email'];?></span>
                     </div>
                     <div class="col-2 mt-2">
                         <p><?php echo $row['number'];?></p>
@@ -302,6 +315,19 @@ aria-label="Search">
         <!-- /#page-content-wrapper -->
 
     </div>
+    <!-- Menu Toggle Script -->
+    <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
+    <!-- Bootstrap tooltip -->
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 </body>
 
 </html>

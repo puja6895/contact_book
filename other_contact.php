@@ -1,13 +1,15 @@
 <?php 
-
+session_start();
+if (!isset($_SESSION['username'])) {
+    $_SESSION['msg'] = "You must log in first";
+    header('location: login.php');
+}
 include "connect.php";
 
-$query = 'select * from contacts where number = "" or email = "" ';
-$result = mysqli_query($conn,$query);
-
-
-
-
+$userId = $_SESSION['id'];
+// $query = "select * from contacts where user_id = $userId and number = '' and email != '' ";
+// echo $query;
+// $result = mysqli_query($conn,$query);
 
 ?>
 
@@ -293,7 +295,10 @@ $result = mysqli_query($conn,$query);
                 <div>
                     <p class="text-secondary mb-3">Other Contacts <?php //echo $total ?></p>
                 </div>
-                <?php $results = mysqli_query($conn,'select * from contacts where number = "" ');  ?>
+                <?php 
+                    $query = "select * from contacts where user_id = $userId and number = '' and email != '' ";
+                    $results = mysqli_query($conn,$query);  
+                ?>
                 <?php while ($row = mysqli_fetch_array($results)) { ?>
                 <div class="row pt-2 row_hover mb-3">
                     <div class="col-4 " style="display: flex; ">

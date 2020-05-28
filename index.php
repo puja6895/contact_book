@@ -5,8 +5,8 @@ if (!isset($_SESSION['username'])) {
     $_SESSION['msg'] = "You must log in first";
     header('location: login.php');
 }
-
-$query ="select count(*) from contacts";
+$userId = $_SESSION['id'];
+$query ="select count(*) from contacts where number !='' and user_id=$userId";
 
 $result = mysqli_query($conn,$query);
 
@@ -290,7 +290,7 @@ $total = $roww['count(*)'];
                 <div>
                     <p class="text-secondary mb-3">Contacts (<?php echo $total ?>)</p>
                 </div>
-                <?php $results = mysqli_query($conn,"select * from contacts where number !=''");  ?>
+                <?php $results = mysqli_query($conn,"select * from contacts where number !='' and user_id=$userId " );  ?>
                 <?php while ($row = mysqli_fetch_array($results)) { ?>
                 <div class="row pt-2 row_hover mb-3">
                     <div class="col-4 " style="display: flex; ">
@@ -336,7 +336,7 @@ $total = $roww['count(*)'];
 
     </div>
 
-    <!-- The Modal -->
+    <!-- The Modal Create Contact-->
     <div class="modal fade" id="myModal">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -363,6 +363,36 @@ $total = $roww['count(*)'];
             </div>
         </div>
     </div>
+    
+    <!-- The Modal edit Contact -->
+    <!-- <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <!-- <div class="modal-header">
+                    <h5 class="modal-title">Edit contact</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div> -->
+
+                <!-- Modal body -->
+                <!-- <?php //$results = mysqli_query($conn,"select * from contacts") ?>
+                <form action="add.php" method="post" enctype="multipart/form-data">
+                    <input type="file" class="image-rounded mt-2" id="image" placeholder="upload image" name="image">
+                    <input type="text" class="form-control mt-2" id="name" placeholder="Name" name="name">
+                    <input type="text" class="form-control mt-2" id="email" placeholder="Email" name="email">
+                    <input type="number" class="form-control mt-2" id="contact" placeholder="Number" name="contact"> -->
+
+                    <!-- Modal footer -->
+                    <!-- <div class="modal-footer form-signin">
+                        <input type="submit" class="btn btn-success" value="Create" name="submit">
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div> --> 
+
 
 
     <!-- Menu Toggle Script -->
